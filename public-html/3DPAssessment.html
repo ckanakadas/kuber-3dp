@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <title>3DP Assessment Report</title>
+</head>
+<body>
+<table border="1" width="100%">
+	<tr>
+		<td>
+			<table border="1" width="100%" style="padding-left:1px;">
+			<tr>
+				<td>
+					<label for="userInput">Material</label>
+					<select id="selMaterial" >
+					  <option value="ABS">ABS</option>
+					  <option value="Plastic">Plastic</option>
+					  <option value="Resin">Resin</option>
+					</select>
+				</td>
+			</tr>
+			<tr><td><label for="txtlength">Length(mm)</label> <input type="text" id="txtlength" value = "0" /></td></tr>
+			<tr><td><label for="txtwidth">Width(mm)</label> <input type="text" id="txtwidth" value = "0" /></td></tr>
+			<tr><td><label for="txtdepth">Depth(mm)</label> <input type="text" id="txtdepth" value = "0" /></td></tr>
+			<tr><td><label for="txtqty">Quantity</label> <input type="text" id="txtqty" value = "0" /></td></tr>
+			<tr>
+				<td>
+					<fieldset data-role="controlgroup" data-type="horizontal">
+					 <legend>Color</legend>
+						<label for="color">Color</label>
+						<input type="radio" name="radioColor" id="color" value="Color">
+						<label for="monochrome">MonoChrome</label>
+						<input type="radio" name="radioColor" value="monochrome" id="monochrome">
+					  </fieldset>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend>Quality</legend>
+						<label for="Low">Low</label>
+						<input type="radio" name="radioQual" value="Low" id="Low">
+						<label for="Medium">Medium</label>
+						<input type="radio" name="radioQual" value="Medium" id="Medium">
+						<label for="High">High</label>
+						<input type="radio" name="radioQual" value="High" id="High">
+					 </fieldset>
+				</td>
+			</tr>
+			<tr><td><label for="txttime">Hours</label> <input type="text" id="txttime" value = "8" /></td></tr>
+			<td><input type="button" onclick="GetDataFromControl()" value="Assess" style="vertical-align:top;" /></td>
+			</table>
+		</td>
+		<td>
+			<div id="showData" style="display:none;">
+				<table border="1" width="100%">
+					<tr>
+						<th>&nbsp;</th>
+						<th>3D Printing</th>
+						<th>Traditional Manufacturing</th>
+					</tr>
+					<tr>
+						<td>COST</td>
+						<td id="3dcost"></td>
+						<td id="tmcost"></td>
+					</tr>
+					<tr>
+						<td>DIMENSION</td>
+						<td><img id="3ddimimg" src="correct.png" align="middle" style='height:25px; width:25px; padding-left:25px;'></td>
+						<td><img id="tmdimimg" src="wrong.png" align="middle" style='height:25px; width:25px; padding-left:85px;'></td>
+					</tr>
+					<tr>
+						<td>Quantity</td>
+						<td><img id="3dqtyimg" src="correct.png" align="middle" style='height:25px; width:25px; padding-left:25px;'></td>
+						<td><img id="tmqtyimg" src="wrong.png" align="middle" style='height:25px; width:25px; padding-left:85px;'></td>
+					</tr>
+					<tr>
+						<td>Time Limit</td>
+						<td id="3dtime"></td>
+						<td id="tmtime"></td>
+					</tr>
+					<tr>
+						<td>Material Color</td>
+						<td><img id="3dmatimg" src="correct.png" align="middle" style='height:25px; width:25px; padding-left:25px;'></td>
+						<td><img id="tmmatimg" src="wrong.png" align="middle" style='height:25px; width:25px; padding-left:85px;'></td>
+					</tr>
+					<tr>
+						<td>Quality</td>
+						<td><img id="3dqualimg" src="correct.png" align="middle" style='height:25px; width:25px; padding-left:25px;'></td>
+						<td><img id="tmqualimg" src="wrong.png" align="middle" style='height:25px; width:25px; padding-left:85px;'></td>
+					</tr>
+				</table>
+			<!--	<table border="0">
+					<tr>
+						<td>
+							
+						</td>
+					</tr>
+				</table>  -->
+				<p id="resultP">fdgfgfd</p>
+				<table border="0">
+					<tr>
+						<td><blink><a href="https://www.w3schools.com/html/">Continue with 3D Printing?</a></blink></td>
+						<!-- <td><a href="javascript:close_window();">close</a> </td> -->
+						<!-- <input type="button" value="Close this window" onclick="windowClose();">  -->
+						<!-- <a href="#" onclick="close_window();return false;">close</a> -->
+						<input type="button" name="CloseMe" value="Close Me" onclick="closeMe()" />
+					</tr>
+				</table>
+			</div>
+		</td>
+	</tr>
+</table> 
+<a href="#" onclick="close_window();return false;">close</a>
+</body>
+<script>
+function closeMe()
+{
+window.open('', '_self').close();
+//var win = window.open("","_self"); /* url = “” or “about:blank”; target=”_self” */ -->
+<!-- win.close();
+<!-- var win = window.open("","_self"); /* url = “” or “about:blank”; target=”_self” */ -->
+<!-- win.close(); -->
+}
+function close_window() {
+
+var popup = window.open(location, '_self', '');
+popup.close();
+//window.open("https://www.w3schools.com/html/", '_self');
+//window.open(location, '_self', '');
+//window.open('','_parent','');
+//window.close();
+}
+function IsDocumentAvailable(url) {
+
+        var fSuccess = false;
+        var client = null;
+
+        // XHR is supported by most browsers.
+        // IE 9 supports it (maybe IE8 and earlier) off webserver
+        // IE running pages off of disk disallows XHR unless security zones are set appropriately. Throws a security exception.
+        // Workaround is to use old ActiveX control on IE (especially for older versions of IE that don't support XHR)
+
+        // FireFox 4 supports XHR (and likely v3 as well) on web and from local disk
+
+        // Works on Chrome, but Chrome doesn't seem to allow XHR from local disk. (Throws a security exception) No workaround known.
+
+        try {
+            client = new XMLHttpRequest();
+            client.open("GET", url, false);
+            client.send();
+        }
+        catch (err) {
+            client = null;
+        }
+
+        // Try the ActiveX control if available
+        if (client === null) {
+            try {
+                client = new ActiveXObject("Microsoft.XMLHTTP");
+                client.open("GET", url, false);
+                client.send();
+            }
+            catch (err) {
+                // Giving up, nothing we can do
+                client = null;
+            }
+        }
+		//console.log(client.status);
+		//console.log(client.responseText);
+        //fSuccess = Boolean(client && client.responseText);
+		if(client.status == 404)
+			alert('false');
+        //return fSuccess;
+    }
+function GetDataFromControl()
+{
+	document.getElementById('showData').style.display='block';
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        myFunction(this);
+    }
+};
+	xhttp.open("GET", "MasterFile.xml", true);
+	xhttp.send();	
+}
+
+function CompareWithMaster()
+{
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        myFunction(this);
+    }
+};
+	xhttp.open("GET", "MasterFile.xml", true);
+	xhttp.send();
+}
+function myFunction(xml) {
+	
+	var ValForNextFunc = '';
+    var xmlDoc = xml.responseXML;
+	
+   //var x = xmlDoc.getElementsByTagName('COST')[2].childNodes[0].nodeValue;
+	var x = '';
+    //var y = x.childNodes[0].nodeValue;
+	//	console.log(y);
+	// document.getElementById("demo").innerHTML = y.nodeValue; 
+   
+	var _Material = document.getElementById('selMaterial').value;
+	var _Length = document.getElementById('txtlength').value;
+	var _Width = document.getElementById('txtwidth').value;
+	var _Depth = document.getElementById('txtdepth').value;
+	var _Qty = document.getElementById('txtqty').value;
+	
+	// Color
+	var _Color = '';
+	if (document.getElementById('color').checked)
+		_Color = '1'; //document.getElementById('color').value;
+	else
+		_Color = '0'; //document.getElementById('monochrome').value;
+	
+	// Quality
+	var _Quality = '';
+	if (document.getElementById('Low').checked)
+		_Quality = '1'; //document.getElementById('low').value;
+	else if (document.getElementById('Medium').checked)
+		_Quality = '2'; //document.getElementById('medium').value;
+	else if (document.getElementById('High').checked)
+		_Quality = '3'; //document.getElementById('high').value;
+		
+	var ErrorMsg = '';
+	
+	var iVal=0;
+	
+	if(_Material == 'ABS')
+		iVal=0;
+	else if(_Material == 'Plastic')
+		iVal=1;
+	else if(_Material == 'Resin')
+		iVal=2;
+	
+	console.log(xmlDoc.getElementsByTagName('COST')[iVal].childNodes[0].nodeValue);
+	
+	ErrorMsg = '';
+	//console.log('1');
+	// cost, qty, length, width, height, color, quality
+	var _costxml = xmlDoc.getElementsByTagName('COST')[iVal].childNodes[0].nodeValue;
+	var _qtyxml = xmlDoc.getElementsByTagName('QTY')[iVal].childNodes[0].nodeValue;
+	var _lenxml = xmlDoc.getElementsByTagName('LENGTH')[iVal].childNodes[0].nodeValue;
+	var _widthxml = xmlDoc.getElementsByTagName('WIDTH')[iVal].childNodes[0].nodeValue;
+	var _heightxml = xmlDoc.getElementsByTagName('HEIGHT')[iVal].childNodes[0].nodeValue;
+	var _colorxml = xmlDoc.getElementsByTagName('COLOR')[iVal].childNodes[0].nodeValue;
+	var _Qualityxml = xmlDoc.getElementsByTagName('QUALITY')[iVal].childNodes[0].nodeValue;
+	var _Timexml = xmlDoc.getElementsByTagName('TIME')[iVal].childNodes[0].nodeValue;
+	
+	if(_colorxml == 'BOTH')
+		_colorxml = '1';
+	else
+		_colorxml = '0';
+	
+	if(_Qualityxml == 'LOW')
+		_Qualityxml = '1';
+	else if(_Qualityxml == 'MED')
+		_Qualityxml = '2';
+	else
+		_Qualityxml = '3';
+	
+	//QTY
+	if(parseInt(_Qty) > parseInt(_qtyxml))
+	{
+		ErrorMsg += ' Required Quantity is more than the permissible quantity.';
+		console.log(ErrorMsg);
+		ValForNextFunc += 'NO,';
+	}
+	else
+	{
+		//no worries
+		ValForNextFunc += 'YES,';
+	}
+	
+	// DIMENSION
+	if((parseInt(_Length) > parseInt(_lenxml)) || (parseInt(_Width) > parseInt(_widthxml)) || (parseInt(_Depth) > parseInt(_heightxml)))
+	{
+		ErrorMsg += ' Dimension is more.';
+		console.log(ErrorMsg);
+		
+		ValForNextFunc += 'NO,';
+	}
+	else
+	{
+		//no worries
+		ValForNextFunc += 'YES,';
+	}
+	
+	//Color. Color&mono=1, MonoChrome = 0
+	if(parseInt(_Color) <= parseInt(_colorxml))
+	{
+		//no worries
+		ValForNextFunc += 'YES,';
+	}
+	else 
+	{
+		ErrorMsg += ' Color not supported.';
+		console.log(ErrorMsg);
+		ValForNextFunc += 'NO,';
+	}
+	
+	//Quality. Low=1, Med=2, High=3
+	if(parseInt(_Quality) <= parseInt(_Qualityxml))
+	{ 
+		// No worries 
+		ValForNextFunc += 'YES,';
+	}
+	else
+	{
+		ErrorMsg += ' Quality is not supported.';
+		console.log(ErrorMsg);
+		ValForNextFunc += 'NO,';
+	}
+	//alert(ErrorMsg);	
+	//return 0;
+	
+	// Pass the values to the next function (Cost, qty, time, material, Quality, Dimension)
+	var _TotalCost = parseInt(_costxml) * parseInt(_Qty);
+	var _TotalTime = (parseInt(_Timexml) * parseInt(_Qty))/60;
+	
+	ValForNextFunc += _TotalCost;
+	ValForNextFunc += ',';
+	ValForNextFunc += _TotalTime;
+	
+	CalculatedFor3DP(ValForNextFunc);
+}
+
+function CalculatedFor3DP(inputval)
+{
+	console.log(inputval);
+	
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        myFunctionForTM(this,inputval);
+    }
+};
+	xhttp.open("GET", "TM.xml", true);
+	xhttp.send();
+	
+}
+function myFunctionForTM(xml, inputval)
+{
+	console.log(inputval);
+	var xmlDoc = xml.responseXML;
+	
+	var iVal=0;
+	var _Material = document.getElementById('selMaterial').value;
+	var _Length = document.getElementById('txtlength').value;
+	var _Width = document.getElementById('txtwidth').value;
+	var _Depth = document.getElementById('txtdepth').value;
+	var _Qty = document.getElementById('txtqty').value;
+	
+	if(_Material == 'ABS')
+		iVal=0;
+	else if(_Material == 'Plastic')
+		iVal=1;
+	else if(_Material == 'Resin')
+		iVal=2;
+	
+	var _costxml = xmlDoc.getElementsByTagName('COST')[iVal].childNodes[0].nodeValue;
+	var _qtyxml = xmlDoc.getElementsByTagName('QTY')[iVal].childNodes[0].nodeValue;
+	var _lenxml = xmlDoc.getElementsByTagName('LENGTH')[iVal].childNodes[0].nodeValue;
+	var _widthxml = xmlDoc.getElementsByTagName('WIDTH')[iVal].childNodes[0].nodeValue;
+	var _heightxml = xmlDoc.getElementsByTagName('HEIGHT')[iVal].childNodes[0].nodeValue;
+	var _colorxml = xmlDoc.getElementsByTagName('COLOR')[iVal].childNodes[0].nodeValue;
+	var _Qualityxml = xmlDoc.getElementsByTagName('QUALITY')[iVal].childNodes[0].nodeValue;
+	var _Timexml = xmlDoc.getElementsByTagName('TIME')[iVal].childNodes[0].nodeValue;
+	
+	var _TotalCost = parseInt(_costxml) * parseInt(_Qty);
+	var _TotalTime = (parseInt(_Timexml) * parseInt(_Qty))/60;
+	
+	//Quantity
+	if(inputval.split(",")[0].trim()=='NO')
+	{
+		document.getElementById('3dqtyimg').src="wrong.png";
+		document.getElementById('tmqtyimg').src="correct.png";
+	}
+	else
+	{
+		document.getElementById('3dqtyimg').src="correct.png";
+		document.getElementById('tmqtyimg').src="correct.png";
+	}
+	
+	//DIMENSION
+	if(inputval.split(",")[1].trim()=='NO')
+	{
+		document.getElementById('3ddimimg').src="wrong.png";
+		document.getElementById('tmdimimg').src="correct.png";
+	}
+	else
+	{
+		document.getElementById('3ddimimg').src="correct.png";
+		document.getElementById('tmdimimg').src="correct.png";
+	}
+	
+	//COLOR
+	if(inputval.split(",")[2].trim()=='NO')
+	{
+		document.getElementById('3dmatimg').src="wrong.png";
+		document.getElementById('tmmatimg').src="correct.png";
+	}
+	else
+	{
+		document.getElementById('3dmatimg').src="correct.png";
+		document.getElementById('tmmatimg').src="correct.png";
+	}
+	
+	//QUALITY
+	if(inputval.split(",")[3].trim()=='NO')
+	{
+		document.getElementById('3dqualimg').src="wrong.png";
+		document.getElementById('tmqualimg').src="correct.png";
+	}
+	else
+	{
+		document.getElementById('3dqualimg').src="correct.png";
+		document.getElementById('tmqualimg').src="correct.png";
+	}
+	
+	//COST
+	document.getElementById('3dcost').innerHTML = inputval.split(",")[4].trim()+ ' USD';
+	document.getElementById('tmcost').innerHTML = _TotalCost + ' USD';
+	
+	//TIME
+	document.getElementById('3dtime').innerHTML = inputval.split(",")[5].trim()+ ' Hours';
+	document.getElementById('tmtime').innerHTML = _TotalTime + ' Hours';
+	
+	document.getElementById('resultP').innerHTML = "The comparison between the 3D Printing & Traditional Manufacturing has been given above in the chart based on the input that was provided."; 
+	
+}
+</script>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <title>3D Printing Management</title>
+	<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+        <meta name="keywords" content="jquery, carousel, image gallery, slider, responsive, flexible, fluid, resize, css3" />
+		<link rel="shortcut icon" href="../favicon.ico"> 
+        <link rel="stylesheet" type="text/css" href="css/demo.css" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="css/elastislide.css" />
+		<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow&v1' rel='stylesheet' type='text/css' />
+		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css' />
+		<noscript>
+			<style>
+				.es-carousel ul{
+					display:block;
+				}
+			</style>
+		</noscript>
+		<script id="img-wrapper-tmpl" type="text/x-jquery-tmpl">	
+			<div class="rg-image-wrapper">
+				{{if itemsCount > 1}}
+					<div class="rg-image-nav">
+						<a href="#" class="rg-image-nav-prev">Previous Image</a>
+						<a href="#" class="rg-image-nav-next">Next Image</a>
+					</div>
+				{{/if}}
+				<div class="rg-image"></div>
+				<div class="rg-loading"></div>
+				<div class="rg-caption-wrapper">
+					<div class="rg-caption" style="display:none;">
+						<p></p>
+					</div>
+				</div>
+			</div>
+		</script>
+</head>
+<body onload="loadPRDropDown()" class="content">
+<table border="1" width="100%" style="height:220px;'">
+	<tr>
+		<td colspan="2">
+			<label for="userInput">Choose Purchase Request Item</label>
+			<select id="selPR" onchange="CallAssess()" >
+			<option value="">-- Purchase Request Items --</option>
+			</select>
+		</td>
+		<td>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td><label id="printer1">Printer-1: Available</label> </td>
+					<td style="text-align:right;"><label id="printer2">Printer-2: Available</label></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:right;"><a href="#">Printer DashBoard</a></td>
+				</tr>
+			</table>			
+		</td>
+	</tr>
+	<tr>
+		<td width="20%">
+			<h2><center><b>Weight & Cost</b></center>
+			<label id="lblMaterialType">Material Type: </label>
+			<label id="lblqty" >Quantity: </label>
+			</br>
+			<u><label id="lblStaticmsg">Statistics for single object:</label></u>
+			<label id="lblunitweight">Unit Weight: </label>
+			<label id="lblunitcost">Unit Cost: </label>
+			<label id="lblunittime">Unit Time: </label>
+			</br>
+			<label id="lblobjprintperkg"></label>
+			<label id="lblstatsforxobj"><u><label id="lbltm">Statistics for multiple objects:</u></label>
+			<label id="lbltotalweight" >Total Weight: </label>
+			<label id="lbltotalcost">Total Cost: </label>
+			<label id="lbltotaltime">Total Time: </label>
+		</td>
+		<td width="50%">
+		<h2><center><b>Assessment Report</b></center>
+				<table border="1" width="100%" style="padding-top:-10px; font-size:12pt;">
+					<tr>
+						<th>&nbsp;</th>
+						<th> <center><b>3D Printing</b></center></th>
+						<th><center><b>Traditional Manufacturing</b></center></th>
+					</tr>
+					<tr>
+						<td>Manufacturing Method</td>
+						<td><center><img src="./images/3d_Machine.png" align="middle" style='height:75px; width:75px; padding-left:25px;'></center></td>
+						<td><center><img src="./images/TM_Machine.png" align="middle" style='height:75px; width:75px; padding-left:85px;'></center></td>
+					</tr>
+					<tr>
+						<td>COST / Quantity</td>
+						<td id="3dcost"></td>
+						<td id="tmcost"></td>
+					</tr>
+					<tr>
+						<td>Prototyping</td>
+						<td id="3dproto"></td>
+						<td id="tmproto"></td>
+					</tr>
+					<tr>
+						<td>Production Lead Time</td>
+						<td id="3dtime"></td>
+						<td id="tmtime"></td>
+					</tr>
+					<tr>
+						<td>Surface Finish</td>
+						<td><center><img id="3dqualimg" align="middle" style='height:25px; width:25px; padding-left:25px;'></center></td>
+						<td><center><img id="tmqualimg" align="middle" style='height:25px; width:25px; padding-left:85px;'></center></td>
+					</tr>
+					<tr>
+						<td>Tolerance</td>
+						<td><center><img id="3dtolimg" align="middle" style='height:25px; width:25px; padding-left:25px;'></center></td>
+						<td><center><img id="tmtolimg" align="middle" style='height:25px; width:25px; padding-left:85px;'></center></td>
+					</tr>
+					<tr>
+						<td>Complexity</td>
+						<td><center><img id="3ddimimg" align="middle" style='height:25px; width:25px; padding-left:25px;'></center></td>
+						<td><center><img id="tmdimimg" align="middle" style='height:25px; width:25px; padding-left:85px;'></center></td>
+					</tr>
+					<tr>
+						<td>Customization</td>
+						<td><center><img id="3dmatimg" align="middle" style='height:25px; width:25px; padding-left:25px;'></center></td>
+						<td><center><img id="tmmatimg" align="middle" style='height:25px; width:25px; padding-left:85px;'></center></td>
+					</tr>
+					<tr>
+						<td>Leightweigh</td>
+						<td id="3dqtyimg"></td>
+						<td id="tmqtyimg"></td>
+					</tr>
+					
+					
+					
+				</table>
+		</td>
+		<td width="30%"><img id="img" height="250px" width="100%"></img>
+		<center>
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td style="align:left;padding-left:20px;"><img id="imgSimulate"></img></td>
+					<td style="align:center;"><img id="imgPrint"></img></td>
+					<td style="align:right;"><img id="imgEdit"></img></td>
+				</tr>
+				<tr>
+					<td colspan="3" style="text-align:center;"><label id="lblNoPOmsg"></label></td>
+				</tr>
+			</table>			
+		</center>
+		</td>
+	</tr>
+</table>
+<!-- <table style="height:500px;" border="1"> -->
+<!-- <tr><td> -->
+	<!-- <iframe id="vs_iframe" src="https://www.viewstl.com/viewstl.php?url=https://localhost:443/HANDG.stl&local" style="border:0;margin:0;width:502px;height:100%;"></iframe> -->
+	<iframe id="vs_iframe" style="border:0;margin:0;width:100%;height:500px;" src=""></iframe>
+<!-- </td></tr> -->
+<!-- </table> -->
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.tmpl.min.js"></script>
+		<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+		<script type="text/javascript" src="js/jquery.elastislide.js"></script>
+		<script type="text/javascript" src="js/gallery.js"></script>
+</body>
+
+<script type="text/javascript">
+    window._chatlio = window._chatlio||[];
+    !function(){ var t=document.getElementById("chatlio-widget-embed");if(t&&window.ChatlioReact&&_chatlio.init)return void _chatlio.init(t,ChatlioReact);for(var e=function(t){return function(){_chatlio.push([t].concat(arguments)) }},i=["configure","identify","track","show","hide","isShown","isOnline", "page"],a=0;a<i.length;a++)_chatlio[i[a]]||(_chatlio[i[a]]=e(i[a]));var n=document.createElement("script"),c=document.getElementsByTagName("script")[0];n.id="chatlio-widget-embed",n.src="https://w.chatlio.com/w.chatlio-widget.js",n.async=!0,n.setAttribute("data-embed-version","2.3");
+       n.setAttribute('data-widget-id','c4908d1a-f173-4a57-7f46-9d3ce79be9d5');
+       c.parentNode.insertBefore(n,c);
+    }();
+</script>
+
+
+<script> 
+function LoadImage()
+{
+
+
+	//RunExe();
+	//CallAssess();
+}
+// Load the values for the PR DropDown
+function loadPRDropDown()
+{
+	// variables declaration
+    var XML_PATH = "./PurchaseInfo/PR.xml";   
+    // load XML file
+    $(function() {
+      $.ajax({
+        type: "GET",
+        url: XML_PATH,
+        dataType: "xml",
+        success: function(xml) {
+          $(xml).find('PR').find('Description').each(function(i) {
+            var ou = $(this).text();
+            $('#selPR').append("<option class='ddheader'>"+ou+"</option>");
+          });
+          $(this).find('Name').each(function() {
+            var name = $(this).text();
+            $('#selPR').append("<option class='ddindent' value='"+ name +"'>"+name+"</option>");
+          });
+        }
+      });
+    });    
+}
+
+function clearAllValues()
+{
+	document.getElementById('imgSimulate').src = ''; document.getElementById('imgSimulate').title = '';
+	document.getElementById('imgPrint').src = ''; document.getElementById('imgPrint').title = '';
+	document.getElementById('imgEdit').src = ''; document.getElementById('imgEdit').title = '';
+	document.getElementById('lblNoPOmsg').innerHTML='';
+	
+	//document.getElementById('fileUploadctrl').style.display = 'none';
+	//document.getElementById('btnsubmit').style.display = 'none';
+	//document.getElementById('btnsubmit').value='';
+	//document.getElementById('btnsubmit').type ='';
+}
+function loadReport()
+{
+	//COST/ Qty
+document.getElementById('3dcost').innerHTML = 'Good for Low Volume';
+document.getElementById('tmcost').innerHTML = 'Good for High Volume';
+
+//Prototyping
+document.getElementById('3dproto').innerHTML = 'Suitable & flxible to have multiple prototype shapes at same time';
+document.getElementById('tmproto').innerHTML = 'Mininum batch required';
+
+//PROD LEAD TIME
+document.getElementById('3dtime').innerHTML = 'Fast';
+document.getElementById('tmtime').innerHTML = 'Slow';
+
+//Quality/ surface finish	
+document.getElementById('3dqualimg').src="correct.png";
+document.getElementById('tmqualimg').src="correct.png";
+
+//Tolernace
+document.getElementById('3dtolimg').src="correct.png";
+document.getElementById('tmtolimg').src="correct.png";
+
+//DIMension/ Complexity
+document.getElementById('3ddimimg').src="correct.png";
+document.getElementById('tmdimimg').src="wrong.png";
+
+//COLOR/ Customization
+document.getElementById('tmmatimg').src="wrong.png";
+document.getElementById('3dmatimg').src="correct.png";
+
+//Lightweigh
+document.getElementById('tmqtyimg').innerHTML="-60%";
+
+document.getElementById('printer1').innerHTML="Printer-1: In Progress";
+
+}
+
+// Assess based on the PR chosen above
+function CallAssess() {
+	clearAllValues();
+	loadReport();
+
+    var x = document.getElementById("selPR").value;
+	if(x)
+	{
+		// Get the Info from the PR.xml & printprop.xml; calculate & then display
+		GetDataFromPurchaseRequest();
+	}
+	else
+	{
+		//Dont Do anything. alert('0');
+	}
+}
+
+function GetDataFromPurchaseRequest()
+{
+//	document.getElementById('showData').style.display='block';
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+	//console.log(this.responseXML);
+        GetDataFromPrinterPropFile(this);
+    }
+};
+	xhttp.open("GET", "./PurchaseInfo/PR.xml", true);
+	xhttp.send();	
+}
+
+function GetDataFromPrinterPropFile(xml)
+{	
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+	//console.log(this.responseXML);
+        GetDataFromPurchaseOrderFile(this, xml);
+    }
+};
+	xhttp.open("GET", "./xml/PrinterProp.xml", true);
+	xhttp.send();
+}
+
+function GetDataFromPurchaseOrderFile(Printerxml, Purchasexml)
+{
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+	//console.log(this.responseXML);
+        FinalCall(this, Printerxml, Purchasexml);
+    }
+};
+	xhttp.open("GET", "./PurchaseInfo/PO.xml", true);
+	xhttp.send();
+}
+
+function FinalCall(POxml, Printerxml, Purchasexml)
+{
+
+	var xml_Purchase = Purchasexml.responseXML;
+	
+	var iValForPurchase=0; var iValForPrinter=0;
+	var _ProdDescription = document.getElementById("selPR").value;
+	
+	// get the value for iValForPurchase from the PR.xml file based on the name/desc
+	
+	var PRnodes = xml_Purchase.getElementsByTagName("PR").length;
+	
+	for (var i = 0; i < PRnodes; i++) 
+	{
+		var _PRDesc = xml_Purchase.getElementsByTagName('Description')[i].childNodes[0].nodeValue;
+		
+		if(_PRDesc == _ProdDescription)
+		{
+			iValForPurchase = i;
+			i=PRnodes+1;
+		}
+	}
+	
+	<!-- if(_ProdDescription == 'HANDG') -->
+		<!-- iValForPurchase = 0; -->
+	<!-- else if(_ProdDescription == 'WHEEL') -->
+		<!-- iValForPurchase = 1; -->
+	
+	var _PRID = xml_Purchase.getElementsByTagName('PID')[iValForPurchase].childNodes[0].nodeValue;
+	var _PRDesc = xml_Purchase.getElementsByTagName('Description')[iValForPurchase].childNodes[0].nodeValue;
+	var _QtyFromPR = xml_Purchase.getElementsByTagName('Qty')[iValForPurchase].childNodes[0].nodeValue;
+	var _MaterialFromPR = xml_Purchase.getElementsByTagName('Material')[iValForPurchase].childNodes[0].nodeValue;
+	var _DiameterFromPR = xml_Purchase.getElementsByTagName('Diameter')[iValForPurchase].childNodes[0].nodeValue;
+	var _WidthFromPR = xml_Purchase.getElementsByTagName('Width')[iValForPurchase].childNodes[0].nodeValue;
+	//console.log('_WidthFromPR :'+_WidthFromPR);
+	var _HeightFromPR = xml_Purchase.getElementsByTagName('Height')[iValForPurchase].childNodes[0].nodeValue;
+	//console.log('_HeightFromPR :'+_HeightFromPR);
+	var _LengthFromPR = xml_Purchase.getElementsByTagName('Length')[iValForPurchase].childNodes[0].nodeValue;
+	//console.log('_LengthFromPR :'+_LengthFromPR);
+	var _DepthFromPR = xml_Purchase.getElementsByTagName('Depth')[iValForPurchase].childNodes[0].nodeValue;
+	//console.log('_DepthFromPR :'+_DepthFromPR);
+	
+	var _ToolTipForImage = xml_Purchase.getElementsByTagName('Tooltip')[iValForPurchase].childNodes[0].nodeValue;
+	
+	var _radius = parseFloat(_DiameterFromPR).toFixed(2);
+	var _area = parseFloat(parseFloat(_radius).toFixed(2) * parseFloat(_radius).toFixed(2) * 3.1415926535897932384626433832795).toFixed(3);
+	var _weight = parseFloat(parseFloat(_area).toFixed(3) * parseFloat(_radius).toFixed(2) * 3.1415926535897932384626433832795).toFixed(3);
+	
+	//console.log(_weight);
+	//Iterate thro the PrinterProp.xml file based on the _MaterialFromPR
+	
+	var xml_Printer = Printerxml.responseXML;
+	
+	var x = xml_Printer.getElementsByTagName("PRINTER");
+	
+	for (i = 0; i < x.length; i++) { 
+        var _PrinterType = x[i].getAttribute('Type');
+		//console.log("Printer Type :"+_PrinterType);
+		
+		if(_PrinterType == _MaterialFromPR)
+		{
+			iValForPrinter = i;
+			i=x.length+1;
+		}
+    }
+	
+	<!-- if(_MaterialFromPR == 'ABS') -->
+		<!-- iValForPrinter = 0; -->
+	<!-- else if(_MaterialFromPR == 'HDPE') -->
+		<!-- iValForPrinter = 1; -->
+	<!-- else if(_MaterialFromPR == 'PLA') -->
+		<!-- iValForPrinter = 2; -->
+	<!-- else if(_MaterialFromPR == 'PVA') -->
+		<!-- iValForPrinter = 3; -->
+		
+	var _Density = xml_Printer.getElementsByTagName('DENSITY')[iValForPrinter].childNodes[0].nodeValue;
+	//console.log("_Density: "+_Density);
+	var _CostPerKGFromPrinter = xml_Printer.getElementsByTagName('COSTPERKG')[iValForPrinter].childNodes[0].nodeValue;
+	//console.log("_CostPerKGFromPrinter: "+_CostPerKGFromPrinter);
+	var _NozzleFromPrinter = xml_Printer.getElementsByTagName('NOZZLE')[iValForPrinter].childNodes[0].nodeValue;
+	//console.log("_NozzleFromPrinter: "+_NozzleFromPrinter);
+	var _BuildSpeedFromPrinter = xml_Printer.getElementsByTagName('BUILDSPEED')[iValForPrinter].childNodes[0].nodeValue;
+	//console.log("_BuildSpeedFromPrinter: "+_BuildSpeedFromPrinter);
+	var _ThermalFromPrinter = xml_Printer.getElementsByTagName('THERMALEXPANSION')[iValForPrinter].childNodes[0].nodeValue;
+	//console.log("_ThermalFromPrinter: "+_ThermalFromPrinter);
+	var _LayerHeightFromPrinter = xml_Printer.getElementsByTagName('LAYERHEIGHT')[iValForPrinter].childNodes[0].nodeValue;
+	//console.log("_LayerHeightFromPrinter: "+_LayerHeightFromPrinter);
+	
+	var _TimeTakenCalulated = (_WidthFromPR / _BuildSpeedFromPrinter) * (_DepthFromPR / ((_NozzleFromPrinter / _ThermalFromPrinter) *100).toFixed(3)) * (_HeightFromPR / _LayerHeightFromPrinter);
+	_TimeTakenCalulated = _TimeTakenCalulated/36;
+	
+	//console.log("_TimeTakenCalulated :"+_TimeTakenCalulated);
+	
+	/*
+	var _tempPercentage = ((pEarned/pPos) * 100).toFixed(3);
+	
+	//(W / B) * (D / ((N / t) / d)) * (H / L)
+	var _tempNew1 = (152.4 / 50) * (152.4 / ((0.5 /0.637698) * 100).toFixed(3)) * (152.4 / 0.33);
+	console.log(_tempNew1);
+	
+	console.log("New Info");
+	console.log("parseFloat(_WidthFromPR).toFixed(1):"+parseFloat(_WidthFromPR).toFixed(1));
+	console.log("parseInt(_BuildSpeedFromPrinter):"+parseInt(_BuildSpeedFromPrinter));
+	console.log("parseFloat(_DepthFromPR).toFixed(1):"+parseFloat(_DepthFromPR).toFixed(1));
+	console.log("parseFloat(_NozzleFromPrinter).toFixed(1):"+parseFloat(_NozzleFromPrinter).toFixed(1));
+	console.log("parseFloat(_HeightFromPR).toFixed(1):"+parseFloat(_HeightFromPR).toFixed(1));
+	console.log("parseFloat(_LayerHeightFromPrinter).toFixed(2):"+parseFloat(_LayerHeightFromPrinter).toFixed(2));
+	console.log(":"+);
+	
+	radius = diameter/2
+	area = radius * radius * 3.1415926535897932384626433832795;
+	weight = (area * length * density);
+	*/
+	
+	document.getElementById('lblStaticmsg').innerHTML='Statistics for single object:';
+	document.getElementById('lblMaterialType').innerHTML = 'Material Type: '+_MaterialFromPR;
+	document.getElementById('lblqty').innerHTML = 'Quantity : '+_QtyFromPR;
+	document.getElementById('lblunitweight').innerHTML = 'Unit Weight : '+_weight + ' Grams';
+	document.getElementById('lblunitcost').innerHTML = 'Unit Cost : $'+_CostPerKGFromPrinter;
+	document.getElementById('lblunittime').innerHTML = 'Unit Time : '+_TimeTakenCalulated.toFixed(2) + " Hours";
+	//document.getElementById('lblobjprintperkg').innerHTML = 'Unit Weight : '+_QtyFromPR;
+	//document.getElementById('lblstatsforxobj').innerHTML = 'Statistics for '+_QtyFromPR+' Objects:';  lbltm
+	document.getElementById('lbltm').innerHTML = 'Statistics for '+_QtyFromPR+' Objects:';  
+	document.getElementById('lbltotalweight').innerHTML = 'Total Weight : '+ (_QtyFromPR*_weight) + ' Grams';
+	document.getElementById('lbltotalcost').innerHTML = 'Total Cost : $'+ (_QtyFromPR*_CostPerKGFromPrinter);
+	document.getElementById('lbltotaltime').innerHTML = 'Total Time : '+ (_QtyFromPR*_TimeTakenCalulated).toFixed(2) + ' Hours';
+	
+	
+//	function UrlExists(url)
+//{
+    <!-- var http = new XMLHttpRequest(); -->
+    <!-- http.open('HEAD', './images/'+_ProdDescription+'.jpg', false); -->
+    <!-- http.send(); -->
+    <!-- if(http.status==404) -->
+	<!-- { -->
+		<!-- document.getElementById('fileUploadctrl').style.display = 'block'; -->
+		<!-- document.getElementById('btnsubmit').style.display = 'block'; -->
+		<!-- document.getElementById('btnsubmit').value='Upload'; -->
+		<!-- document.getElementById('btnsubmit').type ='button'; -->
+	<!-- } -->
+//}
+
+	var _imgAvailable = 1;
+	
+	var http = new XMLHttpRequest(); 
+	http.open('HEAD', './images/'+_ProdDescription+'.jpg', false);
+	http.send();
+	if(http.status==404)
+	{
+		_imgAvailable = 0;
+	}
+	
+	if(_imgAvailable == 1)
+	{
+		document.getElementById('img').src= './images/'+_ProdDescription+'.jpg';
+		document.getElementById('img').title = _ToolTipForImage;
+		
+		document.getElementById('vs_iframe').src = 'https://www.viewstl.com/viewstl.php?url=https://localhost:443/'+_ProdDescription+'.stl&local'; 
+		//https://www.viewstl.com/viewstl.php?url=https://localhost:443/HANDG.stl&local
+	}
+	else
+	{
+		document.getElementById('img').src= '';
+		document.getElementById('img').title = '';
+	}
+	
+	var xml_PurchaseOrder = POxml.responseXML;
+	
+	var x = xml_PurchaseOrder.getElementsByTagName('PO');
+	
+	var POnodes = xml_PurchaseOrder.getElementsByTagName("PO").length;
+//	console.log("Node Count: "+POnodes);
+	
+	var POExistsForPR = 0; // False
+	for (var i = 0; i < POnodes; i++) 
+	{
+		_PRNOFromPOXML = xml_PurchaseOrder.getElementsByTagName('PRID')[i].childNodes[0].nodeValue;
+		//console.log(_PRNOFromPOXML);
+		
+		if(_PRNOFromPOXML == _PRID)
+		{
+			i=POnodes+1;
+			POExistsForPR = 1; // True
+		}
+	}
+	
+	//console.log("Node Count: "+amountOfNodes);
+	
+	
+	
+	if(POExistsForPR == 1)
+	{
+		if(_imgAvailable == 1)
+		{
+			document.getElementById('imgSimulate').src = './images/simulate.png'; document.getElementById('imgSimulate').title = 'Simulate';
+			document.getElementById('imgPrint').src = './images/Print_1.png'; document.getElementById('imgPrint').title = 'Print';
+			document.getElementById('imgEdit').src = './images/Edit.png'; document.getElementById('imgEdit').title = 'Edit';
+		}
+		else
+		{
+			document.getElementById('lblNoPOmsg').innerHTML='Image not available in gallery. Kindly contact the team for adding the same.';
+		}
+	}
+	else
+	{
+		if(_imgAvailable == 1)
+		{
+			document.getElementById('lblNoPOmsg').innerHTML='Purchase Order not found for this Purchase Request/ Model';
+		}
+		else
+		{
+			document.getElementById('lblNoPOmsg').innerHTML='Image not available in gallery. Kindly contact the team for adding the same. </br> Purchase Order not found for this Purchase Request/ Model';
+		}
+	}
+}
+
+
+</script>
+</html>

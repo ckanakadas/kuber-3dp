@@ -1,0 +1,30 @@
+body{
+  width:99%;
+  margin:0 auto;
+}
+
+table:first-child{
+background-color: gray;
+  color:white;
+  margin-right: 1%;
+}
+
+table:nth-child(2n){
+background-color: gray;
+  color:white;
+  margin-right: 1%;
+  width:25%;
+}
+
+/* table:nth-child(4n){ */
+  /* background-color: black; */
+  /* color:white; */
+  /* width:55%; */
+  /* border-color:white; */
+/* } */
+
+
+table{
+  width:15%;
+  float:left;
+}

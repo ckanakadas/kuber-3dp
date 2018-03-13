@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>DXC Labs Printer DashBoard</title>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+        <meta name="description" content="Responsive Image Gallery with jQuery" />
+        <meta name="keywords" content="jquery, carousel, image gallery, slider, responsive, flexible, fluid, resize, css3" />
+		<meta name="author" content="Codrops" />
+		<link rel="shortcut icon" href="../favicon.ico"> 
+       <!-- <link rel="stylesheet" type="text/css" href="css/demo.css" />  -->
+		<!-- <link rel="stylesheet" type="text/css" href="css/style.css" /> -->
+		<!-- <link rel="stylesheet" type="text/css" href="css/elastislide.css" /> -->
+		<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow&v1' rel='stylesheet' type='text/css' />
+		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css' />
+	</head>
+	<body onload="loadXMLDoc()" border="1" cellpadding="0" cellspacing="0" style="border-color:red;">
+	<div class="container">
+	<!-- header -->
+		<div class="content">
+		<h1>DXC Labs Printer DashBoard</h1>
+		<table id="demo" width="100%" border="1"></table>
+		</div>
+	</div>
+	</body>
+<script>
+function loadXMLDoc() {
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      myFunction(this);
+    }
+  };
+  xmlhttp.open("GET", "./printer.xml", true);
+  xmlhttp.send();
+}
+function myFunction(xml) {
+  var i;
+  var xmlDoc = xml.responseXML;
+  var table="<tr><th><center><b>ID</center></th><th><center><b>NAME</center></th><th><center><b>MATERIAL</center></th><th><center><b>RUNNING</center></th><th><center><b>QUEUE</center></th><th><center><b>COMPLETED</center></th><th><center><b>TIME TO COMPLETE</center></th></tr>";
+  var x = xmlDoc.getElementsByTagName("PRINTER");
+  for (i = 0; i <x.length; i++) { 
+    table += "<tr><td><h3><center>" +
+    x[i].getElementsByTagName("ID")[0].childNodes[0].nodeValue + "</center></td><td><h3><center>" +
+    x[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue + "</center></td><td><h3><center>" +
+	x[i].getElementsByTagName("MATERIAL")[0].childNodes[0].nodeValue + "</center></td><td><h3><center>" +
+	x[i].getElementsByTagName("RUNNING")[0].childNodes[0].nodeValue + "</center></td><td><h3><center>" +
+	x[i].getElementsByTagName("QUEUE")[0].childNodes[0].nodeValue + "</center></td><td><h3>" +
+	x[i].getElementsByTagName("COMPLETED")[0].childNodes[0].nodeValue + "</td><td><h3><center>" +
+	x[i].getElementsByTagName("TIMETOCOMPLETE")[0].childNodes[0].nodeValue + "</center></td></tr>";
+	
+	//console.log(table);
+  }
+  document.getElementById("demo").innerHTML = table;
+}
+</script>
+</html>

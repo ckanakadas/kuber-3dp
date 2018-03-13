@@ -1,0 +1,81 @@
+<html>
+<head>
+    <title></title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+</head>
+<body>
+    <div id="show_images" style="width:auto;"></div>
+</body>
+
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            type: 'GET',
+            url: 'images-source1.xml',
+            dataType: 'xml',
+            success: function (xml) {
+				var i=0;
+                $(xml).find('ref').each(function () {
+
+                    img = $(this).find('image').text();
+                    title = $(this).find('title').text();
+                    alt = $(this).find('alt').text();
+					name = $(this).find('name').text();
+					i=i+1;
+
+                    $('<img />')
+							.attr('src', "" + img + "")         // ADD IMAGE PROPERTIES.
+                            .attr('title', title)
+                            .attr('alt', alt)
+                            .width('203px')
+							.height('203px')
+
+                        .appendTo($('#show_images'));       // ADD THE IMAGE TO DIV.
+					
+					$('<div />', {
+						id: 'show_images'+i,
+						width: '300px',
+						height: 'auto',
+						<!-- width: '203px', -->
+						<!-- height: '33px' -->
+					}).appendTo($('#show_images'));
+					
+					$('<button />', {
+						id: 'simulate_'+name,
+						width: '60px',
+						height: '25px',
+						text: 'Simulate',
+						click: function () { callfunc(this) }
+					
+					}).appendTo($('#show_images'+i));
+					
+					$('<button />', {
+						id: 'edit_'+name,
+						width: '45px',
+						height: '25px',
+						text: 'Edit',
+						click: function () { callfunc(this) }
+					
+					}).appendTo($('#show_images'+i));
+					
+					$('<button />', {
+						id: 'print_'+name,
+						width: '60px',
+						height: '25px',
+						text: 'Print',
+						click: function () { callfunc(this) }
+					
+					}).appendTo($('#show_images'+i));
+                });
+            }
+        });
+    });
+
+	function callfunc(nameloc)
+	{
+		alert('1');
+		alert(nameloc.id);
+	}
+</script>
+</html>

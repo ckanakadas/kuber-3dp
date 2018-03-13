@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>DXC Labs Digital Warehouse</title>
+		
+ 		<!-- <a href="http://localhost:86/responsiveimagegallery/PrinterDashBoard.html" target="_new">Printer DashBoard</a> -->
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+        <meta name="description" content="Responsive Image Gallery with jQuery" />
+        <meta name="keywords" content="jquery, carousel, image gallery, slider, responsive, flexible, fluid, resize, css3" />
+		<meta name="author" content="Codrops" />
+		<link rel="shortcut icon" href="../favicon.ico"> 
+        <link rel="stylesheet" type="text/css" href="demo.css" />
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link rel="stylesheet" type="text/css" href="elastislide.css" />
+		<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow&v1' rel='stylesheet' type='text/css' />
+		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css' />
+		
+		<script src="https://s.codepen.io/assets/libs/modernizr.js" type="text/javascript"></script>
+		<script type="text/javascript" src="http:////cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type='text/css' /> -->
+		<link href="https://codepen.io/username/pen/aBcDef" rel="stylesheet" type='text/css' />
+		 <link rel="stylesheet" type="text/css" href="modal.min.css" />
+		<noscript>
+			<style>
+				.es-carousel ul{
+					display:block;
+				}
+			</style>
+		</noscript>
+		<script id="img-wrapper-tmpl" type="text/x-jquery-tmpl">	
+			<div class="rg-image-wrapper">
+				{{if itemsCount > 1}}
+					<div class="rg-image-nav">
+						<a href="#" class="rg-image-nav-prev">Previous Image</a>
+						<a href="#" class="rg-image-nav-next">Next Image</a>
+					</div>
+				{{/if}}
+				<div class="rg-image"></div>
+				<div class="rg-loading"></div>
+				<div class="rg-caption-wrapper">
+					<div class="rg-caption" style="display:block;">
+						<p id="pname"></p>
+					</div>
+					<!-- <p id="demo"></p> -->
+					<div align="center" class="rg-button-wrapper">
+						<input type="button" id="btnAssess" style="width:50px; color:black;" value="Assess" onclick="callAssess()"></input>
+						<input type="button" id="btnSimulate" style="width:65px; color:black;" value="Simulate" onclick="callSimulate()"></input>
+						<input type="button" id="btnPrint" style="width:50px; color:black;" value="Print" data-toggle="modal" data-target="#smallModal"></input>
+						<input type="button" id="btnEdit" style="width:50px; color:black;" value="Edit" onclick="callEdit()"></input>
+						<input type="button" id="btnQC" style="width:50px;display:none;color:black;" value="QC" onclick="callQC()"></input>
+						<!-- <a id="qcref" href="#" target="_new">QC File</a> -->
+					</div>
+				</div>
+				<!-- </td></tr></table> -->
+			</div>
+		</script>
+    </head>
+    <body style="height:150px;" onload="LoadAllImages()">
+				<div class="container">
+				<!-- header -->
+					<div class="content">
+					<h1>DXC Labs Digital Warehouse</h1><input type="button" style="color:black;" value="Printer DashBoard" onclick="showPrinterDB()">
+					<input type="button" style="color:black;" value="Image Search" onclick="searchImage()">
+					<div id="rg-gallery" class="rg-gallery">
+						<div class="rg-thumbs">
+							<!-- Elastislide Carousel Thumbnail Viewer -->
+							<div class="es-carousel-wrapper">
+								<div class="es-nav">
+									<span class="es-nav-prev">Previous</span>
+									<span class="es-nav-next">Next</span>
+								</div>
+								<div class="es-carousel">
+									<ul>
+										<li id="li1"></li>
+									
+										<li id="li2"></li>
+										
+										<li id="li3"></li>
+										
+										<li id="li4"></li>
+										
+										<li id="li5"></li>
+										
+										<li id="li6"></li>
+										
+										<li id="li7"></li>
+										
+										<li id="li8"></li>
+										
+										<li id="li9"></li>
+										
+										<li id="li10"></li>
+										
+										<li id="li11"></li>
+										
+										<li id="li12"></li>
+										
+										<li id="li13"></li>
+										
+										<li id="li14"></li>
+										
+										<li id="li15"></li>
+										
+										<li id="li16"></li>
+										
+										<li id="li17"></li>
+										
+										<li id="li18"></li>
+										
+										<li id="li19"></li>
+									</ul>
+								</div>
+							</div>
+							<!-- End Elastislide Carousel Thumbnail Viewer -->
+						</div><!-- rg-thumbs -->
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td style="text-align:left;"><input id="fileUploadctrl" type="file" style="display:block; width:75px;"></input></td>
+								<td><input id="btnsubmit" onclick="LoadImage()" style="display:block; width:50px; color:black;" value="Upload"></input></td>
+								<td style="padding-left:10px;">
+									<label for="userInput">Show: </label>
+									<select id="selPR" onchange="ShowImages()" style="color:black;" >
+										<option value="All">All</option>
+										<option value="Open">Open PR</option>
+									</select>
+								</td>
+								<td><img src="refresh.png" style="Padding-left:10px;" height="25px" width="45px" onclick="HideClosedPR()"></img></td>
+							</tr>
+						</table>
+					</div><!-- rg-gallery -->
+				</div><!-- content -->
+				</div><!-- container -->
+				<div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+				  <div class="modal-dialog modal-sm">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel" style="color:black;">Choose the Model version</h4>
+					  </div>
+					  <div class="modal-body">
+						<!-- <h3>Choose the Version</h3> -->
+						<label for="userInput" style="color:black;">Model Version</label>
+									<select id="selMaterial" style="color:black;">
+									  <option value="ABS">V0 - 100*100*100</option>
+									  <option value="Plastic">V1 - 150*180*100</option>
+									  <option value="Resin">V2 - 180*180*180</option>
+									</select>
+					  </div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="callPrint()">OK</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="jquery.tmpl.min.js"></script>
+		<script type="text/javascript" src="jquery.easing.1.3.js"></script>
+		<script type="text/javascript" src="jquery.elastislide.js"></script>
+		<script type="text/javascript" src="gallery.js"></script>
+    </body>
+<script>
+function HideClosedPR()
+{
+	document.getElementById('li1').innerHTML = '';
+}
+function callQC()
+{
+	window.open ("http://localhost:86/QC/HANDG_QC1.txt","mywindow","menubar=1,resizable=1,width=800,height=400");
+}
+function showPrinterDB()
+{
+	window.open ("http://localhost:86/responsiveimagegallery/PrinterDashBoard.html","mywindow","menubar=1,resizable=1,width=800,height=400");
+}
+function searchImage()
+{
+	new ActiveXObject("WScript.Shell").Run("search.bat ")
+	//window.open ("http://localhost:5000","mywindow","menubar=1,resizable=1,width=800,height=750,scrollbars=yes");
+	
+		setTimeout(function() { window.open ("http://localhost:5000","mywindow","menubar=1,resizable=1,width=800,height=750,scrollbars=yes") }, 10000);
+
+}
+function LoadAllImages()
+{
+	document.getElementById('li1').innerHTML = '<a href="#"><img src="wheel.jpg" data-large="wheel.jpg" alt="WHEEL" data-description="WHEEL" data-alt="WHEEL" /></a>';
+	document.getElementById('li2').innerHTML = '<a href="#"><img src="gear.jpg" data-large="gear.jpg" alt="GEAR" data-description="GEAR" data-alt="GEAR" /></a>';
+	document.getElementById('li3').innerHTML = '<a href="#"><img src="logo.jpg" data-large="logo.jpg" alt="LOGO" data-description="LOGO" data-alt="LOGO" /></a>';
+	
+	document.getElementById('li4').innerHTML = '<a href="#"><img src="balance_stabilier.jpg" data-large="balance_stabilier.jpg" alt="balance_stabilier" data-description="balance_stabilier" data-alt="balance stabilier" /></a>';
+	
+	document.getElementById('li5').innerHTML = '<a href="#"><img src="crane.jpg" data-large="crane.jpg" alt="crane" data-description="Crane" data-alt="crane" /></a>';
+	
+	document.getElementById('li6').innerHTML = '<a href="#"><img src="ducati-mv-agusta-motorcycle-products-ducati-diavel-1200-billet-triple-clamp-aem-7.jpg" data-large="ducati-mv-agusta-motorcycle-products-ducati-diavel-1200-billet-triple-clamp-aem-7.jpg" alt="ducati-mv-agusta-motorcycle-products-ducati-diavel-1200-billet-triple-clamp-aem-7" data-description="ducati-mv-agusta-motorcycle-products-ducati-diavel-1200-billet-triple-clamp-aem-7" data-alt="triple clamp arm" /></a>';
+	
+	document.getElementById('li7').innerHTML = '<a href="#"><img src="EDM_Wire_Cutting_Machine.jpg" data-large="EDM_Wire_Cutting_Machine.jpg" alt="EDM_Wire_Cutting_Machine" data-description="EDM_Wire_Cutting_Machine"  data-alt="Wire Cutter"/></a>';
+	
+	document.getElementById('li8').innerHTML = '<a href="#"><img src="front-license-plate-mount.jpg" data-large="front-license-plate-mount.jpg" alt="front-license-plate-mount" data-description="front-license-plate-mount" data-alt="License Plate" /></a>';
+	
+	document.getElementById('li9').innerHTML = '<a href="#"><img src="gear_1.jpg" data-large="gear_1.jpg" alt="gear_1" data-description="Complex Gear" data-alt="Gear" /></a>';
+	
+	document.getElementById('li10').innerHTML = '<a href="#"><img src="gun.jpg" data-large="gun.jpg" alt="gun" data-description="gun" data-alt="Gun" /></a>';
+	
+	document.getElementById('li11').innerHTML = '<a href="#"><img src="KL11-3659_3.pw_.jpg" data-large="KL11-3659_3.pw_.jpg" alt="KL11-3659_3.pw_" data-description="KL11-3659_3.pw_" data-alt="1KL11" /></a>';
+	
+	document.getElementById('li12').innerHTML = '<a href="#"><img src="prostetic-1273183_640.jpg" data-large="prostetic-1273183_640.jpg" alt="prostetic-1273183_640" data-description="prostetic-1273183_640" data-alt="HAND" /></a>';
+	
+	document.getElementById('li13').innerHTML = '<a href="#"><img src="sewingmachine.jpg" data-large="sewingmachine.jpg" alt="sewingmachine" data-description="sewingmachine" data-alt="SM" /></a>';
+	
+	document.getElementById('li14').innerHTML = '<a href="#"><img src="stemassembly.jpg" data-large="stemassembly.jpg" alt="stemassembly" data-description="stemassembly" data-alt="Stem" /></a>';
+	
+	document.getElementById('li15').innerHTML = '<a href="#"><img src="suspension_Mechanics.jpg" data-large="suspension_Mechanics.jpg" alt="suspension_Mechanics" data-description="suspension_Mechanics" data-alt="Suspension" /></a>';
+	
+	document.getElementById('li16').innerHTML = '<a href="#"><img src="therefore.jpg" data-large="therefore.jpg" alt="therefore" data-description="therefore" data-alt="Therefore" /></a>';
+	
+	document.getElementById('li17').innerHTML = '<a href="#"><img src="track_cycling.jpg" data-large="track_cycling.jpg" alt="track_cycling" data-description="track_cycling"  data-alt="Cycle Track"/></a>';
+	
+	document.getElementById('li18').innerHTML = '<a href="#"><img src="Triple_Clamp_Kit.jpg" data-large="Triple_Clamp_Kit.jpg" alt="Triple_Clamp_Kit" data-description="Triple_Clamp_Kit" data-alt="Triple Clamp Kit" /></a>';
+	
+	document.getElementById('li19').innerHTML = '<a href="#"><img src="blank.jpg" data-large="blank.jpg" alt="HANDG" data-description="HANDG Model Not available" data-alt="HANDG" /></a>';
+}
+// Assess based on the PR chosen above
+function ShowImages() {
+	
+	var x = document.getElementById("selPR").value;
+	if(x == 'All')
+	{
+		// Dont do anything
+		//console.log(x);
+		LoadAllImages();
+	}
+	else
+	{
+		// Show only Open PRs
+		//Dont Do anything. alert('0');
+		LoadOpenPR();
+	}
+}
+function LoadOpenPR()
+{
+	// Logic to load only those PRs which are open
+	<!-- var xhttp = new XMLHttpRequest(); -->
+	<!-- xhttp.onreadystatechange = function() { -->
+		<!-- if (this.readyState == 4 && this.status == 200)  -->
+		<!-- { -->
+			<!-- //console.log(this.responseXML); -->
+			<!-- LoadOpenPRV1(this); -->
+		<!-- } -->
+	<!-- }; -->
+	<!-- xhttp.open("GET", "./PurchaseInfo/PR.xml", true); -->
+	<!-- xhttp.send();	 -->
+	
+	document.getElementById('li1').innerHTML = '<a href="#"><img src="wheel.jpg" data-large="wheel.jpg" alt="WHEEL" data-description="WHEEL" data-alt="WHEEL" /></a>';
+	document.getElementById('li3').innerHTML = '<a href="#"><img src="logo.jpg" data-large="logo.jpg" alt="LOGO" data-description="LOGO" data-alt="LOGO" /></a>';	
+	document.getElementById('li2').innerHTML = '<a href="#"><img src="gear.jpg" data-large="gear.jpg" alt="GEAR" data-description="GEAR" data-alt="GEAR" /></a>';	
+	document.getElementById('li4').innerHTML = '<a href="#"><img src="balance_stabilier.jpg" data-large="balance_stabilier.jpg" alt="balance_stabilier" data-description="balance_stabilier" data-alt="balance_stabilier" /></a>';
+		
+	HideNonPRImages();
+}
+
+function LoadOpenPRV1(Purchasexml)
+{
+	var xml_Purchase = Purchasexml.responseXML;
+	
+	//PR Index: 0 - HANDG, 1 - WHEEL, 2 - LOGO, 3 - GEAR, 4 - balance_stabilier
+	
+	// HANDG
+	if(xml_Purchase.getElementsByTagName('STATUS')[0].childNodes[0].nodeValue == 'OPEN')
+	{
+		
+		
+	}
+	else
+	{
+		LoadImage();
+	}
+	
+	// WHEEL
+	if(xml_Purchase.getElementsByTagName('STATUS')[1].childNodes[0].nodeValue == 'OPEN')
+	{
+		document.getElementById('li1').innerHTML = '<a href="#"><img src="wheel.jpg" data-large="wheel.jpg" alt="WHEEL" data-description="WHEEL" data-alt="WHEEL" /></a>';
+	}
+	else
+	{
+	
+	}
+	
+	//LOGO
+	if(xml_Purchase.getElementsByTagName('STATUS')[2].childNodes[0].nodeValue == 'OPEN')
+	{
+		document.getElementById('li3').innerHTML = '<a href="#"><img src="logo.jpg" data-large="logo.jpg" alt="LOGO" data-description="LOGO" data-alt="LOGO" /></a>';	
+	}
+	else
+	{
+	
+	}
+	
+	//GEAR
+	if(xml_Purchase.getElementsByTagName('STATUS')[3].childNodes[0].nodeValue == 'OPEN')
+	{
+		document.getElementById('li2').innerHTML = '<a href="#"><img src="gear.jpg" data-large="gear.jpg" alt="GEAR" data-description="GEAR" data-alt="GEAR" /></a>';		
+	}
+	else
+	{
+	
+	}
+	
+	//BALANCE_STABILIZER
+	if(xml_Purchase.getElementsByTagName('STATUS')[4].childNodes[0].nodeValue == 'OPEN')
+	{
+		document.getElementById('li4').innerHTML = '<a href="#"><img src="balance_stabilier.jpg" data-large="balance_stabilier.jpg" alt="balance_stabilier" data-description="balance_stabilier" data-alt="balance_stabilier" /></a>';
+	}
+	else
+	{
+	
+	}
+}
+
+function HideNonPRImages()
+{
+	
+	document.getElementById('li5').innerHTML = '';
+	document.getElementById('li6').innerHTML = '';
+	document.getElementById('li7').innerHTML = '';
+	document.getElementById('li8').innerHTML = '';
+	document.getElementById('li9').innerHTML = '';
+	document.getElementById('li10').innerHTML = '';
+	document.getElementById('li11').innerHTML = '';
+	document.getElementById('li12').innerHTML = '';
+	document.getElementById('li13').innerHTML = '';
+	document.getElementById('li14').innerHTML = '';
+	document.getElementById('li15').innerHTML = '';
+	document.getElementById('li16').innerHTML = '';
+	document.getElementById('li17').innerHTML = '';
+	document.getElementById('li18').innerHTML = '';
+}
+function LoadImage()
+{
+	document.getElementById('li19').innerHTML = '<a href="#"><img id="imgTemp" src="handg.jpg" data-large="handg.jpg" alt="HANDG" data-description="HANDG" data-alt="HANDG" /></a>';
+}
+function callAssess()
+{
+	var id = document.getElementById('pname').innerHTML;
+	//alert(id);
+	if(id == 'Prosthetic Hand')
+		id = 'HANDG'
+
+	if(id == 'GEAR')
+	{
+		alert('Material Not Supported by the existing 3D Printing Service Providers');
+		return;
+		
+	}
+	//else if(id == 'balance_stabilier')
+	//{
+//		alert('PO Not yet created. Kindly contact the Procurement team to raise one');
+//		return;
+//	}
+	else
+	{
+		//alert(id);
+		sessionStorage.setItem("sent", id); 
+		 
+		 //this is to open a window in new tab
+		//window.open("http://localhost:86/Assess_Demo.html","_blank");
+		
+		
+		window.open ("http://localhost:86/Assess_Demo.html","mywindow","menubar=1,resizable=1,width=800,height=380");
+	}
+}
+
+function callSimulate()
+{
+	var id = document.getElementById('pname').innerHTML;
+	
+	if(id == 'Prosthetic Hand')
+		id = 'HANDG'
+			
+	if(id == 'GEAR')
+	{
+		alert('Material Not Supported by the Printer Vendors');
+		return;
+	}
+	else if(id == 'balance_stabilier')
+	{
+		alert('PO Not yet created. Kindly contact the Procurement team to raise one');
+		return;
+	}
+	else
+	{	
+		GetDataFromPurchaseRequest();
+		
+		if(id == 'HANDG')
+			document.getElementById('btnQC').style.display = 'block';
+		else 
+			document.getElementById('btnQC').style.display = 'none';
+			//document.getElementById('qcref').href = "http://localhost:86/QC/"+id+"_QC.txt";
+	}
+}
+
+/*
+function checkIfFileLoaded(fileName) {
+    $.get(fileName, function(data, textStatus) {
+        if (textStatus == "success") {
+            // execute a success code
+            console.log("file loaded!");
+        }
+		else
+		{
+			console.log("File failed");
+		}
+    });
+}
+*/
+
+function callPrint()
+{
+	var _ProdDescription = document.getElementById('pname').innerHTML;
+	
+	if(_ProdDescription == 'Prosthetic Hand')
+		_ProdDescription = 'HANDG';
+	
+	if(_ProdDescription == 'balance_stabilier')
+	{
+		alert('PO Not yet created. Kindly contact the Procurement team to raise one');
+		return;
+	}
+	else if(_ProdDescription == 'GEAR')
+	{
+		alert('Material Not Supported by the Printer Vendors');
+		return;
+	}
+	else // HANDG, LOGO & WHEEL
+	{
+		if (confirm("Kindly confirm to 3D Print the model") == true)
+		{
+if(_ProdDescription == 'HANDG')
+			{
+				var _param1 = 'printer.xml';
+				new ActiveXObject("WScript.Shell").Run("HANDG.bat " +_param1+""); 
+new ActiveXObject("WScript.Shell").Run("queue_check.bat "+_ProdDescription+"_YES");				
+			}
+			else if(_ProdDescription == 'WHEEL') //WHEEL
+			{
+				var _param1 = 'printer.xml';
+				new ActiveXObject("WScript.Shell").Run("WHEEL.bat " +_param1+""); 
+new ActiveXObject("WScript.Shell").Run("queue_check.bat "+_ProdDescription+"_YES");
+			}
+			else if(_ProdDescription == 'LOGO') //LOGO
+			{
+				var _param1 = 'printer.xml';
+				new ActiveXObject("WScript.Shell").Run("LOGO_Q_ADD.bat " +_param1+""); 
+new ActiveXObject("WScript.Shell").Run("queue_check.bat "+_ProdDescription+"_YES");
+			}
+			else
+			{
+				//new ActiveXObject("WScript.Shell").Run("D:\\3D_Printing\\Assess\\test.bat "+_ProdDescription+"_YES");
+			} 
+		}
+	}
+	
+	/*
+	else if(_ProdDescription == 'HANDG')
+	{
+		if (confirm("Kindly confirm to 3D Print the model") == true) 
+		{
+			var person = prompt("Please enter one of the versions: V1(Dim:150*160*170), V2(Dim:100*100*100)", "V1");
+				
+			//GetDataFromPurchaseRequest();
+			//console.log(sessionStorage.getItem("printname"));
+				
+			//if(sessionStorage.getItem("printname"))
+			//{
+				new ActiveXObject("WScript.Shell").Run("D:\\3D_Printing\\Assess\\test.bat "+_ProdDescription+"_YES");
+			//}
+		}
+	}
+	*/
+}
+
+function GetDataFromPurchaseRequest()
+{
+//	document.getElementById('showData').style.display='block';
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) 
+	{
+		//console.log(this.responseXML);
+        GetDataFromPrinterPropFile(this);
+    }
+};
+	xhttp.open("GET", "./PurchaseInfo/PR.xml", true);
+	xhttp.send();	
+}
+
+function GetDataFromPrinterPropFile(xml)
+{	
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) 
+	{
+		//console.log(this.responseXML);
+        GetDataFromPurchaseOrderFile(this, xml);
+    }
+};
+	xhttp.open("GET", "./xml/PrinterProp.xml", true);
+	xhttp.send();
+}
+
+function GetDataFromPurchaseOrderFile(Printerxml, Purchasexml)
+{
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) 
+	{
+		//console.log(this.responseXML);
+        FinalCall(this, Printerxml, Purchasexml);
+    }
+};
+	xhttp.open("GET", "./PurchaseInfo/PO.xml", true);
+	xhttp.send();
+}
+
+function FinalCall(POxml, Printerxml, Purchasexml)
+{
+
+	var xml_Purchase = Purchasexml.responseXML;
+	
+	var iValForPurchase=0; var iValForPrinter=0;
+	//var _ProdDescription = document.getElementById("selPR").value;
+	var _ProdDescription = document.getElementById('pname').innerHTML;
+	//alert(id);
+	
+	if(_ProdDescription == 'Prosthetic Hand')
+		_ProdDescription = 'HANDG'
+	
+	// get the value for iValForPurchase from the PR.xml file based on the name/desc
+	
+	var PRnodes = xml_Purchase.getElementsByTagName("PR").length;
+	
+	for (var i = 0; i < PRnodes; i++) 
+	{
+		var _PRDesc = xml_Purchase.getElementsByTagName('Description')[i].childNodes[0].nodeValue;
+		
+		if(_PRDesc == _ProdDescription)
+		{
+			iValForPurchase = i;
+			i=PRnodes+1;
+		}
+	}
+	
+	var _PRID = xml_Purchase.getElementsByTagName('PID')[iValForPurchase].childNodes[0].nodeValue;
+	var _PRDesc = xml_Purchase.getElementsByTagName('Description')[iValForPurchase].childNodes[0].nodeValue;
+	var _QtyFromPR = xml_Purchase.getElementsByTagName('Qty')[iValForPurchase].childNodes[0].nodeValue;
+	var _MaterialFromPR = xml_Purchase.getElementsByTagName('Material')[iValForPurchase].childNodes[0].nodeValue;
+	
+	//console.log(_weight);
+	//Iterate thro the PrinterProp.xml file based on the _MaterialFromPR
+	
+	var xml_Printer = Printerxml.responseXML;
+	
+	var x = xml_Printer.getElementsByTagName("PRINTER");
+	
+//	function UrlExists(url)
+//{
+    <!-- var http = new XMLHttpRequest(); -->
+    <!-- http.open('HEAD', './images/'+_ProdDescription+'.jpg', false); -->
+    <!-- http.send(); -->
+    <!-- if(http.status==404) -->
+	<!-- { -->
+		<!-- document.getElementById('fileUploadctrl').style.display = 'block'; -->
+		<!-- document.getElementById('btnsubmit').style.display = 'block'; -->
+		<!-- document.getElementById('btnsubmit').value='Upload'; -->
+		<!-- document.getElementById('btnsubmit').type ='button'; -->
+	<!-- } -->
+//}
+	var xml_PurchaseOrder = POxml.responseXML;
+	
+	var x = xml_PurchaseOrder.getElementsByTagName('PO');
+	
+	var POnodes = xml_PurchaseOrder.getElementsByTagName("PO").length;
+	
+	var _PrinterName;
+//	console.log("Node Count: "+POnodes);
+	
+	var POExistsForPR = 0; // False
+	for (var i = 0; i < POnodes; i++) 
+	{
+		_PRNOFromPOXML = xml_PurchaseOrder.getElementsByTagName('PRID')[i].childNodes[0].nodeValue;
+		console.log(_PRNOFromPOXML);
+		
+		if(_PRNOFromPOXML == _PRID)
+		{
+			
+			_PrinterName = xml_PurchaseOrder.getElementsByTagName('Printer')[i].childNodes[0].nodeValue;
+			POExistsForPR = 1; // True
+			i=POnodes+1;
+		}
+	}
+	
+	
+	if(POExistsForPR == 1)
+	{
+		//if (confirm("Kindly confirm to 3D Print the model") == true) 
+		//{
+			new ActiveXObject("WScript.Shell").Run("test.bat "+_ProdDescription+'_'+_PrinterName+"_NO"); 
+			sessionStorage.setItem("printname", _ProdDescription+'_'+_PrinterName); 
+		
+			//txt = "You pressed OK!";
+			// Call the batch file to generate the filename (HANDG_SIM1_YES)
+		//} 
+		//else 
+		//{
+			//txt = "You pressed Cancel!";
+			// Dont do anything
+		//}
+	}
+	else
+	{
+		alert('PO Not yet created. Kindly contact the Procurement team to raise one');
+	}
+}
+	
+</script>
+</html>

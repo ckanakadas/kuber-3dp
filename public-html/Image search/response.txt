@@ -1,0 +1,10 @@
+static/img/pic_003.png|0.0
+static/img/pic_042.png|0.837291
+static/img/pic_006.png|0.865565
+static/img/pic_004.png|0.868312
+static/img/pic_012.png|0.916341
+static/img/pic_088.png|0.918551
+static/img/pic_009.png|0.924147
+static/img/pic_007.png|0.945738
+static/img/pic_010.png|0.947461
+static/img/pic_017.png|0.952093

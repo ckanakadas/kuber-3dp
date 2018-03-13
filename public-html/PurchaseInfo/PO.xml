@@ -1,0 +1,50 @@
+<PURCHASEORDER>
+	<PO>
+		<POID>1</POID>
+		<PRID>1</PRID>
+		<Description>PROSHAND</Description>
+		<Qty>3</Qty>
+		<Material>ABS</Material>
+		<Vendor>Vendor-1</Vendor>
+		<Printer>S1M1</Printer>
+		<BillAmount>$3600</BillAmount>
+		<DueDate>15-Oct-2017</DueDate>
+		<BillingAddress>AddressLine-1, AddressLine-2,City,state,ZIP</BillingAddress>
+	</PO>
+	<PO>
+		<POID>2</POID>
+		<PRID>2</PRID>
+		<Description>WHEEL</Description>
+		<Qty>1</Qty>
+		<Material>PLA</Material>
+		<Vendor>Vendor-2</Vendor>
+		<Printer>S2M1</Printer>
+		<BillAmount>$800</BillAmount>
+		<DueDate>25-Oct-2017</DueDate>
+		<BillingAddress>AddressLine-1, AddressLine-2,City,state,ZIP</BillingAddress>
+	</PO>
+	<PO>
+		<POID>3</POID>
+		<PRID>3</PRID>
+		<Description>LOGO</Description>
+		<Qty>1</Qty>
+		<Material>PVA</Material>
+		<Vendor>Vendor-2</Vendor>
+		<Printer>S2M1</Printer>
+		<BillAmount>$1800</BillAmount>
+		<DueDate>25-Oct-2017</DueDate>
+		<BillingAddress>AddressLine-1, AddressLine-2,City,state,ZIP</BillingAddress>
+	</PO>
+	<PO>
+		<POID>4</POID>
+		<PRID>4</PRID>
+		<Description>GEAR</Description>
+		<Qty>1</Qty>
+		<Material>METAL</Material>
+		<Vendor>Vendor-2</Vendor>
+		<Printer>S2M1</Printer>
+		<BillAmount>$1800</BillAmount>
+		<DueDate>25-Oct-2017</DueDate>
+		<BillingAddress>AddressLine-1, AddressLine-2,City,state,ZIP</BillingAddress>
+	</PO>
+</PURCHASEORDER>

@@ -1,0 +1,37 @@
+<html>
+<head>
+    <title></title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+</head>
+<body>
+    <div id="show_images" style="width:auto;"></div>
+</body>
+
+<script>
+    $(document).ready(function () {
+
+        $.ajax({
+            type: 'GET',
+            url: 'images-source.xml',
+            dataType: 'xml',
+            success: function (xml) {
+
+                $(xml).find('ref').each(function () {
+
+                    img = $(this).find('image').text();
+                    title = $(this).find('title').text();
+                    alt = $(this).find('alt').text();
+
+                    $('<img />')
+                        .attr('src', "" + img + "")         // ADD IMAGE PROPERTIES.
+                            .attr('title', title)
+                            .attr('alt', alt)
+                            .width('113px').height('113px')
+
+                        .appendTo($('#show_images'));       // ADD THE IMAGE TO DIV.
+                });
+            }
+        });
+    });
+</script>
+</html>

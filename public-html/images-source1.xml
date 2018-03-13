@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--   Last edited by http://www.encodedna.com   -->
+<list>
+  <ref>
+    <image>correct.png</image>
+    <title>AngularJS for Beginners</title>
+    <alt>Beginners Guide</alt>
+	<name>1</name>
+  </ref>
+  <ref>
+    <image>wrong.png</image>
+    <title>XML for Beginners</title>
+    <alt>Beginners Guide</alt>
+	<name>2</name>
+  </ref>
+  <ref>
+    <image>html5.jpg</image>
+    <title>HTML5 Xpressions</title>
+    <alt>HTML5 Tips</alt>
+	<name>3</name>
+  </ref>
+</list>

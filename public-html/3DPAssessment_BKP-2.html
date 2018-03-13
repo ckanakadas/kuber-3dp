@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <title>3DP Assessment Report</title>
+    <style>
+      <!--  table, th, td 
+        {
+            margin:10px 0;
+            border:solid 1px #333;
+            padding:2px 4px;
+            font:15px Verdana;
+        }
+        th {
+            font-weight:bold;
+        } -->
+    </style>
+</head>
+<body>
+<table border="0" width="100%">
+	<tr>
+		<td>
+			<table border="0" width="100%" style="padding-left:1px;">
+			<tr>
+				<td>
+					<label for="userInput">Material</label>
+					<select id="selMaterial" >
+					  <option value="ABS">ABS</option>
+					  <option value="Plastic">Plastic</option>
+					  <option value="Resin">Resin</option>
+					</select>
+				</td>
+			</tr>
+			<tr><td><label for="txtlength">Length(mm)</label> <input type="text" id="txtlength" value = "" /></td></tr>
+			<tr><td><label for="txtwidth">Width(mm)</label> <input type="text" id="txtwidth" value = "" /></td></tr>
+			<tr><td><label for="txtdepth">Depth(mm)</label> <input type="text" id="txtdepth" value = "" /></td></tr>
+			<tr><td><label for="txtqty">Quantity</label> <input type="text" id="txtqty" value = "" /></td></tr>
+			<tr>
+				<td>
+					<fieldset data-role="controlgroup" data-type="horizontal">
+					 <legend>Color</legend>
+						<label for="color">Color</label>
+						<input type="radio" name="radioColor" id="color" value="Color">
+						<label for="monochrome">MonoChrome</label>
+						<input type="radio" name="radioColor" value="monochrome" id="monochrome">
+					  </fieldset>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend>Quality</legend>
+						<label for="low">Low</label>
+						<input type="radio" name="radioQual" value="Low" id="low">
+						<label for="medium">Medium</label>
+						<input type="radio" name="radioQual" value="Medium" id="medium">
+						<label for="high">High</label>
+						<input type="radio" name="radioQual" value="High" id="high">
+					 </fieldset>
+				</td>
+			</tr>
+			<tr><td><label for="txttime">Hours</label> <input type="text" id="txttime" value = "" /></td></tr>
+			<td><input type="button" onclick="GetDataFromControl()" value="Assess" style="vertical-align:top;" /></td>
+			</table>
+		</td>
+		<td>
+			<div id="showData" style="display:none;">
+				<table border="0" width="100%">
+					<tr>
+						<th>&nbsp;</th>
+						<th>3D Printing</th>
+						<th>Traditional Manufacturing</th>
+					</tr>
+					<tr>
+						<td>COST</td>
+						<td><img src="correct.png" align="middle" style='height:25px; width:25px; padding-left:25px;'></td>
+						<td><img src="wrong.png" align="middle" style='height:25px; width:25px; padding-left:85px;'></td>
+					</tr>
+					<tr>
+						<td>Quantity</td>
+						<td><img src="correct.png" align="middle" style='height:25px; width:25px; padding-left:25px;'></td>
+						<td><img src="wrong.png" align="middle" style='height:25px; width:25px; padding-left:85px;'></td>
+					</tr>
+					<tr>
+						<td>Time</td>
+						<td><img src="correct.png" align="middle" style='height:25px; width:25px; padding-left:25px;'></td>
+						<td><img src="wrong.png" align="middle" style='height:25px; width:25px; padding-left:85px;'></td>
+					</tr>
+					<tr>
+						<td>Material</td>
+						<td><img src="correct.png" align="middle" style='height:25px; width:25px; padding-left:25px;'></td>
+						<td><img src="wrong.png" align="middle" style='height:25px; width:25px; padding-left:85px;'></td>
+					</tr>
+					<tr>
+						<td>Quality</td>
+						<td><img src="correct.png" align="middle" style='height:25px; width:25px; padding-left:25px;'></td>
+						<td><img src="wrong.png" align="middle" style='height:25px; width:25px; padding-left:85px;'></td>
+					</tr>
+				</table>
+				<p id="resultP">fdgfgfd</p>
+				<table border="0">
+					<tr>
+						<td><a href="https://www.w3schools.com/html/">Continue with 3D Printing?</a></td>
+					</tr>
+				</table>
+			</div>
+		</td>
+	</tr>
+</table> 
+</body>
+<script>
+function GetDataFromControl()
+{
+	document.getElementById('showData').style.display='block';
+var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        myFunction(this);
+    }
+};
+	xhttp.open("GET", "MasterFile.xml", true);
+	xhttp.send();	
+}
+
+function CompareWithMaster()
+{
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        myFunction(this);
+    }
+};
+	xhttp.open("GET", "MasterFile.xml", true);
+	xhttp.send();
+}
+function myFunction(xml) {
+    var xmlDoc = xml.responseXML;
+	
+   //var x = xmlDoc.getElementsByTagName('COST')[2].childNodes[0].nodeValue;
+   var x = '';
+    //var y = x.childNodes[0].nodeValue;
+//	console.log(y);
+   // document.getElementById("demo").innerHTML = y.nodeValue; 
+   
+	var _Material = document.getElementById('selMaterial').value;
+	var _Length = document.getElementById('txtlength').value;
+	var _Width = document.getElementById('txtwidth').value;
+	var _Depth = document.getElementById('txtdepth').value;
+	var _Qty = document.getElementById('txtqty').value;
+	
+	// Color
+	var _Color = '';
+	if (document.getElementById('color').checked)
+		_Color = '1'; //document.getElementById('color').value;
+	else
+		_Color = '0'; //document.getElementById('monochrome').value;
+	
+	// Quality
+	var _Quality = '';
+	if (document.getElementById('low').checked)
+		_Quality = '1'; //document.getElementById('low').value;
+	else if (document.getElementById('medium').checked)
+		_Quality = '2'; //document.getElementById('medium').value;
+	else
+		_Quality = '3'; //document.getElementById('high').value;
+		
+	var ErrorMsg = '';
+	
+	var iVal=0;
+	
+	if(_Material == 'ABS')
+		iVal=0;
+	else if(_Material == 'Plastic')
+		iVal=1;
+	else if(_Material == 'Resin')
+		iVal=2;
+	
+	console.log(xmlDoc.getElementsByTagName('COST')[iVal].childNodes[0].nodeValue);
+	
+	ErrorMsg = '';
+	//console.log('1');
+	// cost, qty, length, width, height, color, quality
+	var _costxml = xmlDoc.getElementsByTagName('COST')[iVal].childNodes[0].nodeValue;
+	var _qtyxml = xmlDoc.getElementsByTagName('QTY')[iVal].childNodes[0].nodeValue;
+	var _lenxml = xmlDoc.getElementsByTagName('LENGTH')[iVal].childNodes[0].nodeValue;
+	var _widthxml = xmlDoc.getElementsByTagName('WIDTH')[iVal].childNodes[0].nodeValue;
+	var _heightxml = xmlDoc.getElementsByTagName('HEIGHT')[iVal].childNodes[0].nodeValue;
+	var _colorxml = xmlDoc.getElementsByTagName('COLOR')[iVal].childNodes[0].nodeValue;
+	var _Qualityxml = xmlDoc.getElementsByTagName('QUALITY')[iVal].childNodes[0].nodeValue;
+	
+	if(_colorxml == 'BOTH')
+		_colorxml = '1';
+	else
+		_colorxml = '0';
+	
+	if(_Qualityxml == 'LOW')
+		_Qualityxml = '1';
+	else if(_Qualityxml == 'MED')
+		_Qualityxml = '2';
+	else
+		_Qualityxml = '3';
+	
+	//QTY
+	if(parseInt(_Qty) > parseInt(_qtyxml))
+	{
+		ErrorMsg += ' Required Quantity is more than the permissible quantity.';
+		console.log(ErrorMsg);
+	}
+	
+	// DIMENSION
+	if((parseInt(_Length) > parseInt(_lenxml)) || (parseInt(_Width) > parseInt(_widthxml)) || (parseInt(_Depth) > parseInt(_heightxml)))
+	{
+		ErrorMsg += ' Dimension is more.';
+		console.log(ErrorMsg);
+	}
+	
+	//Color. Color&mono=1, MonoChrome = 0
+	if(parseInt(_Color) <= parseInt(_colorxml))
+	{
+		//no worries
+	}
+	else 
+	{
+		ErrorMsg += ' Color not supported.';
+		console.log(ErrorMsg);
+	}
+	//Quality. Low=1, Med=2, High=3
+	if(parseInt(_Quality <= _Qualityxml)) 
+	{ 
+		// No worries 
+	}
+	else
+	{
+		ErrorMsg += ' Quality is not supported.';
+		console.log(ErrorMsg);
+	}
+	alert(ErrorMsg);	
+	return 0;
+}
+</script>
+</html>
